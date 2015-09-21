@@ -45,7 +45,7 @@
 
             if (docCookies.hasItem(element.name)) {
                 element.value = docCookies.getItem(element.name);
-                console.log("печеньки");
+                console.log("come to the dark side, we have cookies");
             }
         };
     };
@@ -60,7 +60,6 @@
                 docCookies.setItem(element.name, element.value);
             };
             docCookies.setItem(radioCheck.name, radioCheck.value);
-            formElement.submit();
             console.log("done");
         } else {
             event.preventDefault();
@@ -74,5 +73,5 @@
 
     formElement.onsubmit = postReview;
 
-    formElement.onload = restoreFormValueFromCookies(formElement);
+    formElement.onload = restoreFormValueFromCookies(formElement), hideNameTip(), hideMessageTip();
 
