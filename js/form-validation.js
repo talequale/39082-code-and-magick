@@ -6,11 +6,11 @@
     var messageTip = document.querySelector(".review-fields-text");
     var tips = document.querySelector(".review-fields");
     var FIELDS_TO_PERSIST = ["review-name", "review-mark"];
-    var LAST_BIRTHDAY = new Date(2014, 10, 11);
+    var lastBirthday = new Date(2014, 10, 11);
     var now = new Date();
     var millisecondsSince1970 = now.getTime();
-    var MILLISECONDS_SINCE_LAST_BIRTHDAY = millisecondsSince1970 - LAST_BIRTHDAY.getTime();
-    var expireDate = millisecondsSince1970 + MILLISECONDS_SINCE_LAST_BIRTHDAY;
+    var millisecondsSinceLastBirthday = millisecondsSince1970 - lastBirthday.getTime();
+    var expireDate = millisecondsSince1970 + millisecondsSinceLastBirthday;
 
     function addLeadingZero(value) {
         if (value < 10) {
