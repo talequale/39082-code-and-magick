@@ -12,23 +12,6 @@
     var millisecondsSinceLastBirthday = millisecondsSince1970 - lastBirthday.getTime();
     var expireDate = millisecondsSince1970 + millisecondsSinceLastBirthday;
 
-    function addLeadingZero(value) {
-        if (value < 10) {
-            return '0' + value;
-        }
-        return '' + value;
-    };
-
-     var getFormattedDate = function(date) {
-        if (typeof date === 'undefined') {
-            date = new Date();
-        }
-        var fullMonth = addLeadingZero(date.getMonth() + 1);
-        var fullDate = addLeadingZero(date.getDate());
-        var newDate = [date.getFullYear(), fullMonth, fullDate].join('-');
-         return newDate;
-    };
-
     // спрятать/показать сообщение о необходимости заполнить поле с именем
     function hideNameTip() {
         if (userName.value.trim().length) {
@@ -71,7 +54,7 @@
     function postReview(event) {
         event.preventDefault();
         for (var i = 0; i < FIELDS_TO_PERSIST.length; i++) {
-            docCookies.setItem(FIELDS_TO_PERSIST[i], formElement[FIELDS_TO_PERSIST[i]].value, getFormattedDate(expireDate));
+            docCookies.setItem(FIELDS_TO_PERSIST[i], formElement[FIELDS_TO_PERSIST[i]].value, new Date(expireDate));
         }
         console.log("done");
     }
