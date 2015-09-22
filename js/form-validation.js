@@ -45,10 +45,8 @@
             for (var i = 0; i < FIELDS_TO_PERSIST.length; i++) {
                 docCookies.setItem(FIELDS_TO_PERSIST[i], formElement[FIELDS_TO_PERSIST[i]].value, new Date(expireDate))
             };
-            console.log("it works");
         } else {
             event.preventDefault();
-            console.log("something went wrong");
         }
     }
 
