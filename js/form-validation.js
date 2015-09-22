@@ -1,4 +1,4 @@
-
+(function() {
     var formElement = document.forms[1];
     var userName = formElement["review-name"];
     var message = formElement["review-text"];
@@ -11,59 +11,56 @@
     var millisecondsSince1970 = now.getTime();
     var millisecondsSinceLastBirthday = millisecondsSince1970 - lastBirthday.getTime();
     var expireDate = millisecondsSince1970 + millisecondsSinceLastBirthday;
+    var FIELDS_TO_VALIDATE = [userName, message];
+    var TIPS = [nameTip, messageTip];
 
-    // спрятать/показать сообщение о необходимости заполнить поле с именем
-    function hideNameTip() {
-        if (userName.value.trim().length) {
-            nameTip.classList.add("invisible")
-        } else if (nameTip.classList.contains("invisible")) {
-            nameTip.classList.remove("invisible");
-        };
+    // спрятать/показать сообщение о необходимости заполнить поле
+    function hideTip() {
+        for (var i = 0; i < FIELDS_TO_VALIDATE.length; i++) {
+            if (FIELDS_TO_VALIDATE[i].value.trim().length) {
+                TIPS[i].classList.add("invisible")
+            } else if (TIPS[i].classList.contains("invisible")) {
+                TIPS[i].classList.remove("invisible")
+            }
 
-        if (nameTip.classList.contains("invisible") && messageTip.classList.contains("invisible")) {
-            tips.classList.add("invisible");
-        } else {
-            tips.classList.remove("invisible");
+            if (nameTip.classList.contains("invisible") && messageTip.classList.contains("invisible")) {
+                tips.classList.add("invisible");
+            } else {
+                tips.classList.remove("invisible")
+            }
         }
-    };
-
-    // спрятать/показать сообщение о необходимости заполнить поле с сообщением
-    function hideMessageTip() {
-        if (message.value.trim().length) {
-            messageTip.classList.add("invisible");
-        } else {
-            messageTip.classList.remove("invisible");
-        };
-
-        if (nameTip.classList.contains("invisible") && messageTip.classList.contains("invisible")) {
-            tips.classList.add("invisible");
-        } else {
-            tips.classList.remove("invisible");
-        }
-    };
+    }
 
     //восстановление значений из куки
     function restoreFormValueFromCookies() {
         for (var i = 0; i < FIELDS_TO_PERSIST.length; i++) {
-            formElement[FIELDS_TO_PERSIST[i]].value = docCookies.getItem(FIELDS_TO_PERSIST[i]);
+            formElement[FIELDS_TO_PERSIST[i]].value = docCookies.getItem(FIELDS_TO_PERSIST[i])
         }
-    };
-
+    }
 
     //отправка формы
     function postReview(event) {
-        event.preventDefault();
-        for (var i = 0; i < FIELDS_TO_PERSIST.length; i++) {
-            docCookies.setItem(FIELDS_TO_PERSIST[i], formElement[FIELDS_TO_PERSIST[i]].value, new Date(expireDate));
+        if ((userName.value.trim().length) && (message.value.trim().length)) {
+            event.preventDefault();
+            for (var i = 0; i < FIELDS_TO_PERSIST.length; i++) {
+                docCookies.setItem(FIELDS_TO_PERSIST[i], formElement[FIELDS_TO_PERSIST[i]].value, new Date(expireDate))
+            };
+            console.log("it works");
+        } else {
+            event.preventDefault();
+            console.log("something went wrong");
         }
-        console.log("done");
     }
 
-    userName.onchange = hideNameTip;
+    function formValidation() {
+        formElement.onload = restoreFormValueFromCookies(formElement), hideTip();
+        formElement.onsubmit = postReview;
+        for (var i = 0; i < FIELDS_TO_VALIDATE.length; i++) {
+            FIELDS_TO_VALIDATE[i].onchange = hideTip;
+        };
 
-    message.onchange = hideMessageTip;
+    }
 
-    formElement.onsubmit = postReview;
-
-    formElement.onload = restoreFormValueFromCookies(formElement), hideNameTip(), hideMessageTip();
+    formElement.onload = formValidation();
+})();
 
