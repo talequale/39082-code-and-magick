@@ -5,7 +5,29 @@
     var nameTip = document.querySelector(".review-fields-name");
     var messageTip = document.querySelector(".review-fields-text");
     var tips = document.querySelector(".review-fields");
-    var radioCheck = document.forms[1]["review-mark"];
+    var FIELDS_TO_PERSIST = ["review-name", "review-mark"];
+    var LAST_BIRTHDAY = new Date(2014, 10, 11);
+    var now = new Date();
+    var millisecondsSince1970 = now.getTime();
+    var MILLISECONDS_SINCE_LAST_BIRTHDAY = millisecondsSince1970 - LAST_BIRTHDAY.getTime();
+    var expireDate = millisecondsSince1970 + MILLISECONDS_SINCE_LAST_BIRTHDAY;
+
+    function addLeadingZero(value) {
+        if (value < 10) {
+            return '0' + value;
+        }
+        return '' + value;
+    };
+
+     var getFormattedDate = function(date) {
+        if (typeof date === 'undefined') {
+            date = new Date();
+        }
+        var fullMonth = addLeadingZero(date.getMonth() + 1);
+        var fullDate = addLeadingZero(date.getDate());
+        var newDate = [date.getFullYear(), fullMonth, fullDate].join('-');
+         return newDate;
+    };
 
     // спрятать/показать сообщение о необходимости заполнить поле с именем
     function hideNameTip() {
@@ -38,33 +60,20 @@
     };
 
     //восстановление значений из куки
-    function  restoreFormValueFromCookies(form) {
-        var element;
-        for (var i = 0, l = form.elements.length; i < l; i++) {
-            element = form.elements[i];
-
-            if (docCookies.hasItem(element.name)) {
-                element.value = docCookies.getItem(element.name);
-                console.log("come to the dark side, we have cookies");
-            }
-        };
+    function restoreFormValueFromCookies() {
+        for (var i = 0; i < FIELDS_TO_PERSIST.length; i++) {
+            formElement[FIELDS_TO_PERSIST[i]].value = docCookies.getItem(FIELDS_TO_PERSIST[i]);
+        }
     };
+
 
     //отправка формы
     function postReview(event) {
-        if ((userName.value.trim().length) && (message.value.trim().length)) {
-            event.preventDefault();
-            var element;
-            for (var i = 0; i < formElement.elements.length; i++ ) {
-                element = formElement.elements[i];
-                docCookies.setItem(element.name, element.value);
-            };
-            docCookies.setItem(radioCheck.name, radioCheck.value);
-            console.log("done");
-        } else {
-            event.preventDefault();
-            console.log("something went wrong");
+        event.preventDefault();
+        for (var i = 0; i < FIELDS_TO_PERSIST.length; i++) {
+            docCookies.setItem(FIELDS_TO_PERSIST[i], formElement[FIELDS_TO_PERSIST[i]].value, getFormattedDate(expireDate));
         }
+        console.log("done");
     }
 
     userName.onchange = hideNameTip;
