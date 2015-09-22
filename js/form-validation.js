@@ -50,15 +50,12 @@
         }
     }
 
-    function formValidation() {
-        formElement.onload = restoreFormValueFromCookies(formElement), hideTip();
-        formElement.onsubmit = postReview;
-        for (var i = 0; i < FIELDS_TO_VALIDATE.length; i++) {
-            FIELDS_TO_VALIDATE[i].onchange = hideTip;
-        };
-
-    }
-
-    formElement.onload = formValidation();
+    restoreFormValueFromCookies();
+    hideTip();
+    for (var i = 0; i < FIELDS_TO_VALIDATE.length; i++) {
+        FIELDS_TO_VALIDATE[i].onchange = hideTip;
+    };
+    formElement.onsubmit = postReview;
+    
 })();
 
