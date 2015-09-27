@@ -14,14 +14,13 @@
     var reviewTemplate = document.getElementById("review-template");
     var reviewsFragment = document.createDocumentFragment();
 
-    function hideFilters() {
-        reviewsFilters.classList.add("invisible");
-    }
+    reviewsFilters.classList.add("invisible");
+
     reviews.forEach(function(review, i) {
         var newReviewElement = reviewTemplate.content.children[0].cloneNode(true);
         var avatarTemplate = newReviewElement.querySelector('.review-author');
-        avatarTemplate.title = review["author"]["name"];
-        newReviewElement.querySelector(".review-text").textContent = review['description'];
+        avatarTemplate.title = review['author']['name'];
+        newReviewElement.querySelector('.review-text').textContent = review['description'];
         newReviewElement.querySelector('.review-rating').classList.add(ratingClassName[Math.floor(review['rating'])]);
 
         if (review['author']['picture']) {
@@ -45,5 +44,5 @@
         reviewsFragment.appendChild(newReviewElement);
     });
     reviewsContainer.appendChild(reviewsFragment);
-    hideFilters();
+    reviewsFilters.classList.remove("invisible");
 })();
