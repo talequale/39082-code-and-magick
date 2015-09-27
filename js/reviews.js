@@ -5,7 +5,7 @@
         '2': 'review-rating-two',
         '3': 'review-rating-three',
         '4': 'review-rating-four',
-        '5': 'review-rating-five',
+        '5': 'review-rating-five'
     };
 
     var IMAGE_FAILURE_TIMEOUT = 10000;
