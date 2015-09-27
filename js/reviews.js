@@ -19,19 +19,19 @@
     reviews.forEach(function(review, i) {
         var newReviewElement = reviewTemplate.content.children[0].cloneNode(true);
         var avatarTemplate = newReviewElement.querySelector('.review-author');
-        avatarTemplate.title = review['author']['name'];
-        newReviewElement.querySelector('.review-text').textContent = review['description'];
-        newReviewElement.querySelector('.review-rating').classList.add(ratingClassName[Math.floor(review['rating'])]);
+        avatarTemplate.title = review.author.name;
+        newReviewElement.querySelector('.review-text').textContent = review.description;
+        newReviewElement.querySelector('.review-rating').classList.add(ratingClassName[Math.floor(review.rating)]);
 
         if (review.author.picture) {
-            reviewAvatar = new Image();
+            var reviewAvatar = new Image();
             reviewAvatar.src = review.author.picture;
             var imageLoadTimeout = setTimeout(function() {
                 newReviewElement.classList.add('review-load-failure');
             }, IMAGE_FAILURE_TIMEOUT);
             reviewAvatar.onload = function() {
                 reviewAvatar.classList.add('review-author');
-                reviewAvatar.title = review['author']['name'];
+                reviewAvatar.title = review.author.name;
                 reviewAvatar.style.width = '124px';
                 reviewAvatar.style.height = '124px';
                 newReviewElement.replaceChild(reviewAvatar, avatarTemplate);
