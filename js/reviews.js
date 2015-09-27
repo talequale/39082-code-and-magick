@@ -23,9 +23,9 @@
         newReviewElement.querySelector('.review-text').textContent = review['description'];
         newReviewElement.querySelector('.review-rating').classList.add(ratingClassName[Math.floor(review['rating'])]);
 
-        if (review['author']['picture']) {
+        if (review.author.picture) {
             reviewAvatar = new Image();
-            reviewAvatar.src = review['author']['picture'];
+            reviewAvatar.src = review.author.picture;
             var imageLoadTimeout = setTimeout(function() {
                 newReviewElement.classList.add('review-load-failure');
             }, IMAGE_FAILURE_TIMEOUT);
