@@ -23,7 +23,7 @@
   var reviewsContainer = document.querySelector('.reviews-list');
   var reviews;
 
-  function renderReviews(reviews) {
+  function renderReviews(filteredReviews) {
     reviewsContainer.classList.remove('reviews-load-failure');
     reviewsContainer.innerHTML = '';
 
@@ -32,7 +32,7 @@
 
     reviewsFilters.classList.add('invisible');
 
-    reviews.forEach(function(review) {
+    filteredReviews.forEach(function(review) {
       var newReviewElement = reviewTemplate.content.children[0].cloneNode(true);
       var avatarTemplate = newReviewElement.querySelector('.review-author');
       avatarTemplate.title = review.author.name;
@@ -99,8 +99,8 @@
     };
   }
 
-  function filterReviews(reviews, filterName) {
-    var filteredReviews = reviews.slice(0);
+  function filterReviews(reviewsList, filterName) {
+    var filteredReviews = reviewsList.slice(0);
 
     switch (filterName) {
 
@@ -167,7 +167,7 @@
         break;
 
       default:
-        filteredReviews = reviews.slice(0);
+        filteredReviews = reviewsList.slice(0);
         break;
     }
     return filteredReviews;
