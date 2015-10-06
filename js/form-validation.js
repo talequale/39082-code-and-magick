@@ -56,6 +56,6 @@
         FIELDS_TO_VALIDATE[i].onchange = hideTip;
     };
     formElement.onsubmit = postReview;
-    
+
 })();
 
