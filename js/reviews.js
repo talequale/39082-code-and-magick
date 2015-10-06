@@ -88,6 +88,7 @@
             var data = loadedXhr.response;
             reviewsContainer.classList.remove('reviews-list-loading');
             callback(JSON.parse(data));
+            return callback(JSON.parse(data));
           }
           if (loadedXhr.status > 400) {
             showLoadFailure();
