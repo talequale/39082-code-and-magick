@@ -105,7 +105,7 @@
     switch (filterName) {
 
       case 'reviews-recent':
-        filteredReviews = filteredReviews.sort(function (a, b) {
+        filteredReviews = filteredReviews.sort(function(a, b) {
           if (new Date(a.date) > new Date(b.date)) {
             return -1;
           }
