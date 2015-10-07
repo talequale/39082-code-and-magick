@@ -1,6 +1,6 @@
-'use strict';
+/*'use strict';
 
-(function() {
+(function() {*/
 
   var readyState = {
     'UNSENT': 0,
@@ -106,7 +106,11 @@
     switch (filterName) {
 
       case 'reviews-recent':
-        filteredReviews = filteredReviews.sort(function(a, b) {
+        filteredReviews = filteredReviews.filter(function(item) {
+          var SIX_MONTHS = 182.5 * 24 * 60 * 60 * 1000;
+          var limitingDate = new Date - new Date(SIX_MONTHS);
+          return Date.parse(item.date) > limitingDate;
+        }).sort(function(a, b) {
           if (new Date(a.date) > new Date(b.date)) {
             return -1;
           }
@@ -194,4 +198,4 @@
     reviews = loadedReviews;
     setActiveFilter('sort-hotels-default');
   });
-})();
+/*})();*/
