@@ -19,6 +19,7 @@
   };
 
   var REQUEST_FAILURE_TIMEOUT = 10000;
+  var SIX_MONTHS = 182.5 * 24 * 60 * 60 * 1000;
   var reviewsFilters = document.querySelector('.reviews-filter');
   var reviewsContainer = document.querySelector('.reviews-list');
   var reviews;
@@ -107,7 +108,6 @@
 
       case 'reviews-recent':
         filteredReviews = filteredReviews.filter(function(item) {
-          var SIX_MONTHS = 182.5 * 24 * 60 * 60 * 1000;
           var limitingDate = new Date() - new Date(SIX_MONTHS);
           return Date.parse(item.date) > limitingDate;
         }).sort(function(a, b) {
