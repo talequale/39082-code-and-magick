@@ -111,15 +111,7 @@
           var limitingDate = new Date() - new Date(SIX_MONTHS);
           return Date.parse(item.date) > limitingDate;
         }).sort(function(a, b) {
-          if (new Date(a.date) > new Date(b.date)) {
-            return -1;
-          }
-          if (new Date(a.date) < new Date(b.date)) {
-            return 1;
-          }
-          if (new Date(a.date) === new Date(b.date)) {
-            return 0;
-          }
+          return a.date < b.date;
         });
         break;
 
@@ -127,17 +119,7 @@
         filteredReviews = filteredReviews.filter(function(item) {
           return item.rating > 2;
         }).sort(function(a, b) {
-          if (a.rating > b.rating) {
-            return -1;
-          }
-
-          if (a.rating < b.rating) {
-            return 1;
-          }
-
-          if (a.rating === b.rating) {
-            return 0;
-          }
+          return a.rating < b.rating;
         });
         break;
 
@@ -145,29 +127,13 @@
         filteredReviews = filteredReviews.filter(function(item) {
           return item.rating < 3;
         }).sort(function(a, b) {
-          if (a.rating < b.rating) {
-            return -1;
-          }
-          if (a.rating > b.rating) {
-            return 1;
-          }
-          if (a.rating === b.rating) {
-            return 0;
-          }
+          return a.rating > b.rating;
         });
         break;
 
       case 'reviews-popular':
         filteredReviews = filteredReviews.sort(function(a, b) {
-          if (a['review-rating'] > b['review-rating']) {
-            return -1;
-          }
-          if (a['review-rating'] < b['review-rating']) {
-            return 1;
-          }
-          if (a['review-rating'] === b['review-rating']) {
-            return 0;
-          }
+          return a['review-rating'] < b['review-rating'];
         });
         break;
 
