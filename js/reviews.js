@@ -111,7 +111,7 @@
           var limitingDate = new Date() - new Date(SIX_MONTHS);
           return Date.parse(item.date) > limitingDate;
         }).sort(function(a, b) {
-          return a.date < b.date;
+          return a.date - b.date;
         });
         break;
 
@@ -119,21 +119,21 @@
         filteredReviews = filteredReviews.filter(function(item) {
           return item.rating > 2;
         }).sort(function(a, b) {
-          return a.rating < b.rating;
-        });
+          return a.rating - b.rating;
+        }).reverse();
         break;
 
       case 'reviews-bad':
         filteredReviews = filteredReviews.filter(function(item) {
           return item.rating < 3;
         }).sort(function(a, b) {
-          return a.rating > b.rating;
+          return a.rating - b.rating;
         });
         break;
 
       case 'reviews-popular':
         filteredReviews = filteredReviews.sort(function(a, b) {
-          return a['review-rating'] < b['review-rating'];
+          return a['review-rating'] - b['review-rating'];
         });
         break;
 
