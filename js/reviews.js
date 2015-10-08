@@ -179,7 +179,7 @@
 
     filtersContainer.addEventListener('click', function(evt) {
       var checkedFilter = evt.target;
-      while (checkedFilter != this) {
+      while (checkedFilter !== this) {
         if (!(checkedFilter.classList.contains('reviews-filter-item'))) {
           setActiveFilter(checkedFilter.id);
           return;
@@ -204,7 +204,7 @@
     }
     showMore.addEventListener('click', function() {
       showMoreReviews();
-    })
+    });
   }
 
   initFilters();
@@ -214,7 +214,7 @@
     setActiveFilter(localStorage.getItem('filterName') || 'reviews-all');
     if (localStorage.getItem('checkedButton')) {
       var checkedButton = localStorage.getItem('checkedButton');
-      document.querySelector('input[name="reviews"][value="' + checkedButton + '"]').setAttribute('checked','checked');
+      document.querySelector('input[name="reviews"][value="' + checkedButton + '"]').setAttribute('checked', 'checked');
     }
   });
 })();
