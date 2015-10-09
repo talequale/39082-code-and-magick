@@ -49,7 +49,7 @@
       });
       window.addEventListener('startParallax', function() {
         window.addEventListener('scroll', moveBackground);
-      })
+      });
     });
   }
 
