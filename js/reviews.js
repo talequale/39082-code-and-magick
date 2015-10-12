@@ -21,6 +21,7 @@
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var SIX_MONTHS = 182.5 * 24 * 60 * 60 * 1000;
   var REVIEWS_PER_PAGE = 3;
+  var ADD_TO_EXISTING = true;
 
   var reviewsFilters = document.querySelector('.reviews-filter');
   var reviewsContainer = document.querySelector('.reviews-list');
@@ -192,10 +193,10 @@
   function showMoreReviews() {
     if (isNextPageAvailable()) {
       currentPage = currentPage + 1;
-      renderReviews(currentReviews, currentPage, true);
+      renderReviews(currentReviews, currentPage, ADD_TO_EXISTING);
     } else {
       currentPage = currentPage;
-      renderReviews(currentReviews, currentPage, true);
+      renderReviews(currentReviews, currentPage, ADD_TO_EXISTING);
       showMore.classList.add('invisible');
     }
   }
