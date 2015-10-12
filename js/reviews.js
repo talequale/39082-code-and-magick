@@ -171,7 +171,7 @@
   }
 
   function isNextPageAvailable() {
-    return currentPage < Math.ceil(reviews.length / REVIEWS_PER_PAGE);
+    return currentPage < (Math.ceil(currentReviews.length / REVIEWS_PER_PAGE)) - 1;
   }
 
   function initFilters() {
@@ -179,7 +179,7 @@
 
     filtersContainer.addEventListener('click', function(evt) {
       var checkedFilter = evt.target;
-      while (checkedFilter !== this) {
+      while (checkedFilter) {
         if (!(checkedFilter.classList.contains('reviews-filter-item'))) {
           setActiveFilter(checkedFilter.id);
           return;
@@ -191,9 +191,11 @@
 
   function showMoreReviews() {
     if (isNextPageAvailable()) {
-      renderReviews(currentReviews, currentPage++, true);
+      currentPage = currentPage + 1;
+      renderReviews(currentReviews, currentPage, true);
     } else {
-      renderReviews(currentReviews, currentPage, false);
+      currentPage = currentPage;
+      renderReviews(currentReviews, currentPage, true);
       showMore.classList.add('invisible');
     }
   }
