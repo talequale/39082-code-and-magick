@@ -179,7 +179,7 @@
 
     filtersContainer.addEventListener('click', function(evt) {
       var checkedFilter = evt.target;
-      while (checkedFilter) {
+      while (!(checkedFilter.classList.contains('reviews-filter'))) {
         if (!(checkedFilter.classList.contains('reviews-filter-item'))) {
           setActiveFilter(checkedFilter.id);
           return;
