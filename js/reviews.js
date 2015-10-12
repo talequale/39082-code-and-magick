@@ -194,10 +194,14 @@
     if (isNextPageAvailable()) {
       currentPage = currentPage + 1;
       renderReviews(currentReviews, currentPage, REPLACE_EXISTING);
+      if (isNextPageAvailable()) {
+        return;
+      } else {
+        showMore.classList.add('invisible');
+      }
     } else {
       currentPage = currentPage;
       renderReviews(currentReviews, currentPage, REPLACE_EXISTING);
-      showMore.classList.add('invisible');
     }
   }
 
