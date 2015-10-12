@@ -157,8 +157,8 @@
     localStorage.setItem('filterName', filterName);
     var filterButton = document.getElementsByName('reviews');
     for (var i = 0; i < filterButton.length; i++) {
-      filterButton[i].addEventListener('click', function() {
-        localStorage.setItem('checkedButton', this.value);
+      filterButton[i].addEventListener('click', function(evt) {
+        localStorage.setItem('checkedButton', evt.target.value);
       });
     }
     return filteredReviews;
