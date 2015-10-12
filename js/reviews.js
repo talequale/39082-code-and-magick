@@ -194,9 +194,7 @@
     if (isNextPageAvailable()) {
       currentPage = currentPage + 1;
       renderReviews(currentReviews, currentPage, REPLACE_EXISTING);
-      if (isNextPageAvailable()) {
-        return;
-      } else {
+      if (!(isNextPageAvailable())) {
         showMore.classList.add('invisible');
       }
     } else {
