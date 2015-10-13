@@ -20,18 +20,31 @@
 
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var SIX_MONTHS = 182.5 * 24 * 60 * 60 * 1000;
+  var REVIEWS_PER_PAGE = 3;
+  var REPLACE_EXISTING = true;
+
   var reviewsFilters = document.querySelector('.reviews-filter');
   var reviewsContainer = document.querySelector('.reviews-list');
   var reviews;
+  var currentReviews;
+  var currentPage = 0;
+  var showMore = document.querySelector('.reviews-controls-more');
 
-  function renderReviews(filteredReviews) {
-    reviewsContainer.classList.remove('reviews-load-failure');
-    reviewsContainer.innerHTML = '';
+  function renderReviews(filteredReviews, pageNumber, replace) {
+    pageNumber = pageNumber || 0;
+    replace = typeof replace !== 'undefined' ? replace : true;
+
+    if (replace) {
+      reviewsContainer.classList.remove('reviews-load-failure');
+      reviewsContainer.innerHTML = '';
+    }
 
     var reviewTemplate = document.getElementById('review-template');
     var reviewsFragment = document.createDocumentFragment();
 
-    reviewsFilters.classList.add('invisible');
+    var reviewsFrom = pageNumber * REVIEWS_PER_PAGE;
+    var reviewsTo = reviewsFrom + REVIEWS_PER_PAGE;
+    filteredReviews = filteredReviews.slice(reviewsFrom, reviewsTo);
 
     filteredReviews.forEach(function(review) {
       var newReviewElement = reviewTemplate.content.children[0].cloneNode(true);
@@ -46,17 +59,17 @@
         var imageLoadTimeout = setTimeout(function() {
           newReviewElement.classList.add('review-load-failure');
         }, REQUEST_FAILURE_TIMEOUT);
-        reviewAvatar.onload = function() {
+        reviewAvatar.addEventListener('load', function() {
           reviewAvatar.classList.add('review-author');
           reviewAvatar.title = review.author.name;
           reviewAvatar.style.width = '124px';
           reviewAvatar.style.height = '124px';
           newReviewElement.replaceChild(reviewAvatar, avatarTemplate);
           clearTimeout(imageLoadTimeout);
-        };
-        reviewAvatar.onerror = function() {
+        });
+        reviewAvatar.addEventListener('error', function() {
           newReviewElement.classList.add('review-load-failure');
-        };
+        });
       }
       reviewsFragment.appendChild(newReviewElement);
     });
@@ -141,27 +154,72 @@
         filteredReviews = reviewsList.slice(0);
         break;
     }
+    localStorage.setItem('filterName', filterName);
+    var filterButton = document.getElementsByName('reviews');
+    for (var i = 0; i < filterButton.length; i++) {
+      filterButton[i].addEventListener('click', function(evt) {
+        localStorage.setItem('checkedButton', evt.target.value);
+      });
+    }
     return filteredReviews;
   }
 
   function setActiveFilter(filterID) {
-    var filteredReviews = filterReviews(reviews, filterID);
-    renderReviews(filteredReviews);
+    currentReviews = filterReviews(reviews, filterID);
+    currentPage = 0;
+    renderReviews(currentReviews, currentPage, true);
+    showMore.classList.remove('invisible');
+  }
+
+  function isNextPageAvailable() {
+    return currentPage < (Math.ceil(currentReviews.length / REVIEWS_PER_PAGE)) - 1;
   }
 
   function initFilters() {
-    var filterButtons = document.querySelectorAll('.reviews-filter-item');
-    for (var i = 0, l = filterButtons.length; i < l; i++) {
-      filterButtons[i].onclick = function(event) {
-        var checkedButton = event.currentTarget;
-        setActiveFilter(checkedButton.htmlFor);
-      };
+    var filtersContainer = document.querySelector('.reviews-filter');
+
+    filtersContainer.addEventListener('click', function(evt) {
+      var checkedFilter = evt.target;
+      while (!(checkedFilter.classList.contains('reviews-filter'))) {
+        if (!(checkedFilter.classList.contains('reviews-filter-item'))) {
+          setActiveFilter(checkedFilter.id);
+          return;
+        }
+        checkedFilter = checkedFilter.parentNode;
+      }
+    });
+  }
+
+  function showMoreReviews() {
+    if (isNextPageAvailable()) {
+      currentPage = currentPage + 1;
+      renderReviews(currentReviews, currentPage, REPLACE_EXISTING);
+      if (!(isNextPageAvailable())) {
+        showMore.classList.add('invisible');
+      }
+    } else {
+      currentPage = currentPage;
+      renderReviews(currentReviews, currentPage, REPLACE_EXISTING);
     }
   }
 
+  function nextPage() {
+    if (!(currentReviews)) {
+      showMore.classList.remove('invisible');
+    }
+    showMore.addEventListener('click', function() {
+      showMoreReviews();
+    });
+  }
+
   initFilters();
+  nextPage();
   loadReviews(function(loadedReviews) {
     reviews = loadedReviews;
-    setActiveFilter('sort-hotels-default');
+    setActiveFilter(localStorage.getItem('filterName') || 'reviews-all');
+    if (localStorage.getItem('checkedButton')) {
+      var checkedButton = localStorage.getItem('checkedButton');
+      document.querySelector('input[name="reviews"][value="' + checkedButton + '"]').setAttribute('checked', 'checked');
+    }
   });
 })();
