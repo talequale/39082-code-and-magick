@@ -28,6 +28,8 @@
       case Key.ESC:
         hideGallery();
         break;
+      default:
+        break;
     }
   }
 
@@ -67,5 +69,5 @@
       }
       clickedElement = clickedElement.parentNode;
     }
-  })
+  });
 })();
