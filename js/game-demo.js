@@ -38,12 +38,12 @@
     window.addEventListener('scroll', function() {
       clearTimeout(someTimeout);
       someTimeout = setTimeout(elementVisibilityCheck(cloudBox), 100);
-      window.addEventListener('stopParallax', function() {
-        window.removeEventListener('scroll', moveBackground);
-      });
-      window.addEventListener('startParallax', function() {
-        window.addEventListener('scroll', moveBackground);
-      });
+    });
+    window.addEventListener('stopParallax', function() {
+      window.removeEventListener('scroll', moveBackground);
+    });
+    window.addEventListener('startParallax', function() {
+      window.addEventListener('scroll', moveBackground);
     });
   }
 
