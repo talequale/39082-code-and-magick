@@ -2,11 +2,10 @@
 (function() {
   var cloudBox = document.querySelector('.header-clouds');
   var xValue = 50;
-  var delta; // переменная, в которую записывается разница значений скролла
-  var movingClouds = document.querySelector('.header-clouds');
 
   // определение направления скролла
   function scrollDirection() {
+    var delta;
     var pixelsFromTop = window.pageYOffset || document.documentElement.scrollTop;
     window.addEventListener('scroll', function() {
       var currentPixelsFromTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -32,13 +31,9 @@
   function scrollInit() {
     var someTimeout;
     function moveBackground() {
-      scrollDirection();
-      movingClouds.style.backgroundPosition = xValue + '%' + ' ' + '0%';
-      if (delta < 0) {
-        xValue = xValue + 1;
-      } else {
-        xValue = xValue - 1;
-      }
+      var delta = scrollDirection();
+      cloudBox.style.backgroundPosition = xValue + '%' + ' ' + '0%';
+      xValue = xValue - delta;
     }
     window.addEventListener('scroll', moveBackground);
     window.addEventListener('scroll', function() {
