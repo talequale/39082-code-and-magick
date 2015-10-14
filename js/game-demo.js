@@ -27,13 +27,14 @@
     }
   }
 
+  function moveBackground() {
+    var delta = (scrollDirection()) / 10;
+    cloudBox.style.backgroundPosition = xValue + '%' + ' ' + '0%';
+    xValue = xValue - delta;
+  }
+
   function scrollInit() {
     var someTimeout;
-    function moveBackground() {
-      var delta = (scrollDirection()) / 10;
-      cloudBox.style.backgroundPosition = xValue + '%' + ' ' + '0%';
-      xValue = xValue - delta;
-    }
     window.addEventListener('scroll', function() {
       clearTimeout(someTimeout);
       someTimeout = setTimeout(elementVisibilityCheck(cloudBox), 100);
