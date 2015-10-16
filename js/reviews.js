@@ -10,14 +10,6 @@
     'DONE': 4
   };
 
-  var ratingClassName = {
-    '1': 'review-rating-one',
-    '2': 'review-rating-two',
-    '3': 'review-rating-three',
-    '4': 'review-rating-four',
-    '5': 'review-rating-five'
-  };
-
   var REQUEST_FAILURE_TIMEOUT = 10000;
   var SIX_MONTHS = 182.5 * 24 * 60 * 60 * 1000;
   var REVIEWS_PER_PAGE = 3;
@@ -39,39 +31,15 @@
       reviewsContainer.innerHTML = '';
     }
 
-    var reviewTemplate = document.getElementById('review-template');
     var reviewsFragment = document.createDocumentFragment();
 
     var reviewsFrom = pageNumber * REVIEWS_PER_PAGE;
     var reviewsTo = reviewsFrom + REVIEWS_PER_PAGE;
     filteredReviews = filteredReviews.slice(reviewsFrom, reviewsTo);
 
-    filteredReviews.forEach(function(review) {
-      var newReviewElement = reviewTemplate.content.children[0].cloneNode(true);
-      var avatarTemplate = newReviewElement.querySelector('.review-author');
-      avatarTemplate.title = review.author.name;
-      newReviewElement.querySelector('.review-text').textContent = review.description;
-      newReviewElement.querySelector('.review-rating').classList.add(ratingClassName[Math.floor(review.rating)]);
-
-      if (review.author.picture) {
-        var reviewAvatar = new Image();
-        reviewAvatar.src = review.author.picture;
-        var imageLoadTimeout = setTimeout(function() {
-          newReviewElement.classList.add('review-load-failure');
-        }, REQUEST_FAILURE_TIMEOUT);
-        reviewAvatar.addEventListener('load', function() {
-          reviewAvatar.classList.add('review-author');
-          reviewAvatar.title = review.author.name;
-          reviewAvatar.style.width = '124px';
-          reviewAvatar.style.height = '124px';
-          newReviewElement.replaceChild(reviewAvatar, avatarTemplate);
-          clearTimeout(imageLoadTimeout);
-        });
-        reviewAvatar.addEventListener('error', function() {
-          newReviewElement.classList.add('review-load-failure');
-        });
-      }
-      reviewsFragment.appendChild(newReviewElement);
+    filteredReviews.forEach(function(reviewData) {
+      var newReviewElement = new Review(reviewData);
+      newReviewElement.render(reviewsFragment);
     });
     reviewsContainer.appendChild(reviewsFragment);
     reviewsFilters.classList.remove('invisible');
